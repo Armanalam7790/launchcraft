@@ -1,0 +1,211 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Reference is light-dominant: cream sections punctuated by a few
+     near-black ones (cards, footer) — not a single global dark theme. */
+  --color-cream: #f5f4f0;
+  --color-cream-soft: #eeece6;
+  --color-black: #0b0b0c;
+  --color-black-soft: #17171a;
+
+  --color-ink: #12110f;
+  --color-ink-dark: #f5f4f0;
+  --color-muted: #6b6a66;
+  --color-muted-dark: #9a9994;
+  --color-line: rgb(18 17 15 / 0.12);
+  --color-line-dark: rgb(245 244 240 / 0.14);
+
+  --color-orange: #ff5a1f;
+  --color-lime: #c8ff00;
+
+  --color-card-purple: #cdbdf5;
+  --color-card-blue: #aad6f2;
+  --color-card-green: #cdf27a;
+  --color-card-yellow: #f6d65c;
+
+  /* legacy aliases still referenced by a few not-yet-restyled components */
+  --color-bg: var(--color-black);
+  --color-bg-soft: var(--color-black-soft);
+  --color-bg-elevated: #1f1f22;
+  --color-line-soft: rgb(245 244 240 / 0.08);
+
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-script: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+}
+
+html {
+  background: var(--color-cream);
+}
+
+html.lenis {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+.accent-script {
+  font-family: var(--font-script);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+}
+
+::selection {
+  background: var(--color-orange);
+  color: var(--color-cream);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink);
+  opacity: 0.3;
+  border: 2px solid var(--color-cream);
+  border-radius: 8px;
+}
+
+/* grain overlay */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* custom cursor */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1000;
+  will-change: transform;
+}
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: #fff;
+  mix-blend-mode: difference;
+  transition: opacity 0.2s;
+}
+.cursor-ring {
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  mix-blend-mode: difference;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  background: transparent;
+  will-change: transform, width, height, margin, background, border-color;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.reveal-lines {
+  overflow: hidden;
+  display: block;
+}
+
+.split-line {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
+}
+.split-word,
+.split-char {
+  display: inline-block;
+  will-change: transform;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll var(--speed, 28s) linear infinite;
+}
+.marquee-track.is-reverse {
+  animation-direction: reverse;
+}
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.circular-text {
+  animation: spin-slow 14s linear infinite;
+}
+.circular-text.is-fast {
+  animation-duration: 6s;
+}
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
